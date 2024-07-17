@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const collectionSchema = new mongoose.Schema({
+const CollectionSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -31,6 +31,6 @@ const collectionSchema = new mongoose.Schema({
     }
 })
 
-const Collection = mongoose.models.Collection || mongoose.model("Collection", collectionSchema) 
+const Collection = mongoose.models.Collection || mongoose.model("Collection", CollectionSchema) 
 
 export default Collection

@@ -1,33 +1,33 @@
 "use client";
 
-import { columns } from "@/components/collections/CollectionColumns";
 import { DataTable } from "@/components/custom ui/DataTable";
 import Loader from "@/components/custom ui/Loader";
+import { columns } from "@/components/products/ProductColumns";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const Collections = () => {
+const Products = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [collections, setCollections] = useState([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
 
-  const getCollections = async () => {
+  const getProducts = async () => {
     try {
-      const res = await fetch("/api/collections", {
+      const res = await fetch("/api/products", {
         method: "GET",
       });
       const data = await res.json();
-      setCollections(data);
+      setProducts(data);
       setLoading(false);
     } catch (error) {
-      console.log("[collections_GET]", error);
+      console.log("[products_GET]", error);
     }
   };
   useEffect(() => {
-    getCollections();
+    getProducts();
   }, []);
 
   return loading ? (
@@ -35,21 +35,21 @@ const Collections = () => {
   ) : (
     <div className="px-10 py-5">
       <div className="flex items-center justify-between  text-black mt-4">
-        <p className="text-heading2-bold text-rose-600">Collections</p>
+        <p className="text-heading2-bold text-rose-600">Products</p>
         <Button
           className="bg-blue-500"
-          onClick={() => router.push("/collections/new")}
+          onClick={() => router.push("/products/new")}
         >
           <PlusIcon className="h-4 w-4 mr-2" />
-          Create Collection
+          Create Product
         </Button>
       </div>
       <Separator className="bg-gray-600 h-1 my-4" />
       <div className="text-black">
-        <DataTable columns={columns} data={collections} searchKey="title" />
+        <DataTable columns={columns} data={products} searchKey="title" />
       </div>
     </div>
   );
 };
 
-export default Collections;
+export default Products;

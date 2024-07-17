@@ -46,6 +46,7 @@ const ImageUploader: React.FC<ImageUploadProps> = ({
         {({ open }) => {
           return (
             <Button
+              type="button"
               onClick={() => open()}
               className="bg-green-600 text-emerald-100"
             >
