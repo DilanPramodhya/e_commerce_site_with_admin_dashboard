@@ -11,7 +11,9 @@ const LeftSideBar = () => {
 
   return (
     <div className="h-screen left-0 top-0 sticky p-20 flex flex-col gap-16 bg-black shadow-xl max-lg:hidden">
-      <Image src="/logo5.webp" alt="logo" width={100} height={60} />
+      <Link href="/">
+      <Image src="/logo5.webp" alt="logo" width={100} height={60}  />
+     </Link>
 
       <div className="flex flex-col gap-12">
         {navLinks.map((link) => (

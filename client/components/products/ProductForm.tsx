@@ -185,8 +185,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                     onChange={(url) => field.onChange([...field.value, url])}
                     onRemove={(url) =>
                       field.onChange([
-                        ...field.value,
-                        filter((image) => image !== url),
+                        ...field.value.filter((image) => image !== url),
                       ])
                     }
                   />
