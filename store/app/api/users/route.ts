@@ -21,7 +21,7 @@ export const GET = async (req: NextRequest) => {
       await user.save();
     }
 
-    return new NextResponse(user, { status: 200 });
+    return NextResponse.json(user, { status: 200 });
   } catch (error) {
     console.log("[users_GET]", error);
     return new NextResponse("Internal Server Error", { status: 500 });

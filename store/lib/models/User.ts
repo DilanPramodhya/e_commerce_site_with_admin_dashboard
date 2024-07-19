@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   clerkId: String,
-  whistList: {
+  wishlist: {
     type: Array,
     default: [],
   },

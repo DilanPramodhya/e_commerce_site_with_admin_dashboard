@@ -4,7 +4,7 @@ import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ProductCard = ({ product }: { product: ProductType }) => {
   const router = useRouter()
@@ -39,11 +39,11 @@ const ProductCard = ({ product }: { product: ProductType }) => {
     try {
       if (!user) {
         router.push('/sign-in')
-        return
+        return;
       } else {
         setLoading(true)
         const res = await fetch('/api/users/wishlist', {
-          method: "POST"
+          method: "POST",
           body: JSON.stringify({productId: product._id})
         })
         const updatedUser = await res.json()
