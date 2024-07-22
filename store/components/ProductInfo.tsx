@@ -4,6 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import HeartFavorite from "./HeartFavorite";
 import { MinusCircle, PlusCircle } from "lucide-react";
+import useCart from "@/lib/hooks/useCart";
 
 const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
   const [selectedColor, setSelectedColor] = useState<string>(
@@ -13,6 +14,8 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
     productInfo.sizes[0]
   );
   const [quantity, setQuantity] = useState<number>(1);
+
+  const cart = useCart();
 
   return (
     <div className="max-w-[400px] flex flex-col gap-4">
@@ -73,11 +76,11 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
 
       <div className="flex flex-col gap-2">
         <p className="text-base-medium text-gray-600">Quantity :</p>
-        <div
-          className="flex gap-4 items-center"
-          onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-        >
-          <MinusCircle className="hover:text-red-1 cursor-pointer" />
+        <div className="flex gap-4 items-center">
+          <MinusCircle
+            className="hover:text-red-1 cursor-pointer"
+            onClick={() => quantity > 1 && setQuantity(quantity - 1)}
+          />
           <p className="text-body-bold">{quantity}</p>
           <PlusCircle
             className="hover:text-red-1 cursor-pointer"
@@ -85,7 +88,18 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
           />
         </div>
       </div>
-      <button className="outline outline-black text-base-bold py-2 rounded-lg hover:bg-blue-900 hover:text-white">
+
+      <button
+        className="outline outline-black text-base-bold py-2 rounded-lg hover:bg-blue-900 hover:text-white"
+        onClick={() => {
+          cart.addItem({
+            item: productInfo,
+            quantity,
+            color: selectedColor,
+            size: selectedSize,
+          });
+        }}
+      >
         Add to Cart
       </button>
     </div>
