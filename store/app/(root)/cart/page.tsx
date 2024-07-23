@@ -1,16 +1,49 @@
 "use client";
+
 import useCart from "@/lib/hooks/useCart";
+import { useUser } from "@clerk/nextjs";
 import { MinusCircle, PlusCircle, Trash } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const Cart = () => {
+  const router = useRouter();
+  const { user } = useUser();
   const cart = useCart();
   const total = cart.cartItems.reduce(
     (acc, cartItem) => acc + cartItem.item.price * cartItem.quantity,
     0
   );
   const totalRounded = parseFloat(total.toFixed(2));
+
+  console.log(user);
+  const customer = {
+    clerkId: user?.id,
+    email: user?.emailAddresses[0].emailAddress,
+    name: user?.fullName,
+  };
+
+  const handleCheckout = async () => {
+    try {
+      if (!user) {
+        router.push("/sign-in");
+      } else {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/checkout`,
+          {
+            method: "POST",
+            body: JSON.stringify({ cartItems: cart.cartItems, customer }),
+          }
+        );
+        const data = await res.json();
+        window.location.href = data.url;
+        console.log(data);
+      }
+    } catch (error) {
+      console.log("[checkout_POST]", error);
+    }
+  };
 
   return (
     <div className="flex gap-20 py-16 px-10 max-lg:flex-col">
@@ -22,7 +55,10 @@ const Cart = () => {
         ) : (
           <div>
             {cart.cartItems.map((cartItem) => (
-              <div className="w-full flex max-sm:flex-col max-sm:gap-4 hover:bg-gray-700 hover:text-white px-6 py-5  items-center max-sm:items-start justify-between">
+              <div
+                className="w-full flex max-sm:flex-col max-sm:gap-4 hover:bg-gray-700 hover:text-white px-6 py-5  
+              items-center max-sm:items-start justify-between"
+              >
                 <div className="flex items-center">
                   <Image
                     src={cartItem.item.media[0]}
@@ -77,7 +113,10 @@ const Cart = () => {
           <span>Total Amount</span>
           <span>${totalRounded}</span>
         </div>
-        <button className="border rounded-lg text-body-bold bg-white py-3 w-full hover:bg-black hover:text-white">
+        <button
+          className="border rounded-lg text-body-bold bg-white py-3 w-full hover:bg-black hover:text-white"
+          onClick={handleCheckout}
+        >
           Proceed to Checkout
         </button>
       </div>
