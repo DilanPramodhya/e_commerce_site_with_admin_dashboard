@@ -14,11 +14,11 @@ export default async function Home() {
   const totalCustomers = await getTotalCustomers();
 
   const graphData = await getSalesPerMonth();
-  return (
-    <div className="px-8 py-10 text-black">
-      <p className="text-heading2-bold text-blue-600">Dashboard</p>
 
-      <Separator className="bg-gray-600 h-1 my-5 " />
+  return (
+    <div className="px-8 py-10">
+      <p className="text-heading1-bold text-blue-1">Dashboard</p>
+      <Separator className="bg-grey-1 my-5 h-1" />
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-10">
         <Card>
@@ -43,23 +43,23 @@ export default async function Home() {
 
         <Card>
           <CardHeader className="flex flex-row justify-between items-center">
-            <CardTitle>Total Customers</CardTitle>
+            <CardTitle>Total Customer</CardTitle>
             <UserRound className="max-sm:hidden" />
           </CardHeader>
           <CardContent>
             <p className="text-body-bold">{totalCustomers}</p>
           </CardContent>
         </Card>
-
       </div>
-        <Card className="mt-10">
-          <CardHeader>
-            <CardTitle>Sales Chart (LKR)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <SalesChart data={graphData} />
-          </CardContent>
-        </Card>
+
+      <Card className="mt-10">
+        <CardHeader>
+          <CardTitle>Sales Chart (LKR)</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <SalesChart data={graphData} />
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,13 +1,14 @@
 import { create } from "zustand";
 import { toast } from "react-hot-toast";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 interface CartItem {
   item: ProductType;
   quantity: number;
-  color?: string; // '?' means optional
-  size?: string; // '?' means optional
+  color?: string; // ? means optional
+  size?: string; // ? means optional
 }
+
 interface CartStore {
   cartItems: CartItem[];
   addItem: (item: CartItem) => void;
@@ -23,13 +24,15 @@ const useCart = create(
       cartItems: [],
       addItem: (data: CartItem) => {
         const { item, quantity, color, size } = data;
-        const currentItems = get().cartItems;
+        const currentItems = get().cartItems; // all the items already in cart
         const isExisting = currentItems.find(
           (cartItem) => cartItem.item._id === item._id
         );
+
         if (isExisting) {
-          return toast("Item already in the cart");
+          return toast("Item already in cart");
         }
+
         set({ cartItems: [...currentItems, { item, quantity, color, size }] });
         toast.success("Item added to cart", { icon: "🛒" });
       },
@@ -68,3 +71,4 @@ const useCart = create(
 );
 
 export default useCart;
+

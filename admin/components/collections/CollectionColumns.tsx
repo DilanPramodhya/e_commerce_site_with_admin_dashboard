@@ -11,7 +11,7 @@ export const columns: ColumnDef<CollectionType>[] = [
     cell: ({ row }) => (
       <Link
         href={`/collections/${row.original._id}`}
-        className="hover:text-blue-800"
+        className="hover:text-red-1"
       >
         {row.original.title}
       </Link>
@@ -23,7 +23,7 @@ export const columns: ColumnDef<CollectionType>[] = [
     cell: ({ row }) => <p>{row.original.products.length}</p>,
   },
   {
-    id: "action",
+    id: "actions",
     cell: ({ row }) => <Delete item="collection" id={row.original._id} />,
   },
 ];

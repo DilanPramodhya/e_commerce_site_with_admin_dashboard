@@ -11,7 +11,7 @@ export const columns: ColumnDef<ProductType>[] = [
     cell: ({ row }) => (
       <Link
         href={`/products/${row.original._id}`}
-        className="hover:text-blue-800"
+        className="hover:text-red-1"
       >
         {row.original.title}
       </Link>
@@ -24,19 +24,18 @@ export const columns: ColumnDef<ProductType>[] = [
   {
     accessorKey: "collections",
     header: "Collections",
-    cell: ({ row }) =>
-      row.original.collections.map((collection) => collection.title).join(", "),
+    cell: ({ row }) => row.original.collections.map((collection) => collection.title).join(", "),
   },
   {
     accessorKey: "price",
-    header: "Price ($)",
+    header: "Price (LKR)",
   },
   {
     accessorKey: "expense",
-    header: "Expense ($)",
+    header: "Expense (LKR)",
   },
   {
-    id: "action",
+    id: "actions",
     cell: ({ row }) => <Delete item="product" id={row.original._id} />,
   },
 ];

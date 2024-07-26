@@ -1,7 +1,8 @@
-"use client";
-import React, { useState } from "react";
-import { Button } from "../ui/button";
+"use client"
+
+import { useState } from "react";
 import { Trash } from "lucide-react";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,6 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 
 interface DeleteProps {
@@ -25,22 +27,22 @@ const Delete: React.FC<DeleteProps> = ({ item, id }) => {
 
   const onDelete = async () => {
     try {
-      setLoading(true);
-      const itemType = item === "product" ? "products" : "collections";
+      setLoading(true)
+      const itemType = item === "product" ? "products" : "collections"
       const res = await fetch(`/api/${itemType}/${id}`, {
         method: "DELETE",
-      });
+      })
 
       if (res.ok) {
-        setLoading(false);
-        window.location.href = `/${itemType}`;
-        toast.success(`${item} Deleted`);
+        setLoading(false)
+        window.location.href = (`/${itemType}`)
+        toast.success(`${item} deleted`)
       }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong. Please try again");
+    } catch (err) {
+      console.log(err)
+      toast.error("Something went wrong! Please try again.")
     }
-  };
+  }
   return (
     <AlertDialog>
       <AlertDialogTrigger>
@@ -48,21 +50,16 @@ const Delete: React.FC<DeleteProps> = ({ item, id }) => {
           <Trash className="h-4 w-4" />
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="bg-white text-gray-700">
+      <AlertDialogContent className="bg-white text-grey-1">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-red-1">
-            Are you absolutely sure?
-          </AlertDialogTitle>
+          <AlertDialogTitle className="text-red-1">Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your{" "}
-            {item}.
+            This action cannot be undone. This will permanently delete your {item}.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-red-1 text-white" onClick={onDelete}>
-            Delete
-          </AlertDialogAction>
+          <AlertDialogAction className="bg-red-1 text-white" onClick={onDelete}>Delete</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

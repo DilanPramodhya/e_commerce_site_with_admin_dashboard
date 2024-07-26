@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Command,
   CommandDialog,
@@ -12,6 +11,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
+import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { X } from "lucide-react";
 
@@ -33,7 +33,6 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState(false);
 
-  // console.log(collections);
   let selected: CollectionType[];
 
   if (value.length === 0) {
@@ -44,9 +43,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     ) as CollectionType[];
   }
 
-  const selectables = collections.filter(
-    (collection) => !selected.includes(collection)
-  );
+  const selectables = collections.filter((collection) => !selected.includes(collection)); 
 
   return (
     <Command className="overflow-visible bg-white">
@@ -54,15 +51,12 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         {selected.map((collection) => (
           <Badge key={collection._id}>
             {collection.title}
-            <button
-              type="button"
-              className="ml-1 hover:text-red-1"
-              onClick={() => onRemove(collection._id)}
-            >
+            <button type="button" className="ml-1 hover:text-red-1" onClick={() => onRemove(collection._id)}>
               <X className="h-3 w-3" />
             </button>
           </Badge>
         ))}
+
         <CommandInput
           placeholder={placeholder}
           value={inputValue}
@@ -74,7 +68,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
 
       <div className="relative mt-2">
         {open && (
-          <CommandGroup className="absolute w-full z-10 top-0 overflow-auto border rounded-md shadow-md">
+          <CommandGroup className="absolute w-full z-30 top-0 overflow-auto border rounded-md shadow-md">
             {selectables.map((collection) => (
               <CommandItem
                 key={collection._id}
@@ -83,7 +77,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
                   onChange(collection._id);
                   setInputValue("");
                 }}
-                className="hover:bg-slate-600 cursor-pointer"
+                className="hover:bg-grey-2 cursor-pointer"
               >
                 {collection.title}
               </CommandItem>

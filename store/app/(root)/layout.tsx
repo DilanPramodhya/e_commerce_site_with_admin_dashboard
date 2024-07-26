@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "../globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+
+import "../globals.css";
 import Navbar from "@/components/Navbar";
 import ToasterProvider from "@/lib/providers/ToasterProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MegaMart - Store",
+  title: "MegaMart Store",
   description: "MegaMart Ecommerce Store",
 };
 

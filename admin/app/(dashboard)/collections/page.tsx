@@ -1,16 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
+
 import { columns } from "@/components/collections/CollectionColumns";
 import { DataTable } from "@/components/custom ui/DataTable";
-import Loader from "@/components/custom ui/Loader";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { PlusIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import Loader from "@/components/custom ui/Loader";
 
 const Collections = () => {
   const router = useRouter();
+
   const [loading, setLoading] = useState(true);
   const [collections, setCollections] = useState([]);
 
@@ -22,32 +24,26 @@ const Collections = () => {
       const data = await res.json();
       setCollections(data);
       setLoading(false);
-    } catch (error) {
-      console.log("[collections_GET]", error);
+    } catch (err) {
+      console.log("[collections_GET]", err);
     }
   };
+
   useEffect(() => {
     getCollections();
   }, []);
 
-  return loading ? (
-    <Loader />
-  ) : (
+  return loading ? <Loader /> : (
     <div className="px-10 py-5">
-      <div className="flex items-center justify-between  text-black mt-4">
-        <p className="text-heading2-bold text-rose-600">Collections</p>
-        <Button
-          className="bg-blue-500"
-          onClick={() => router.push("/collections/new")}
-        >
-          <PlusIcon className="h-4 w-4 mr-2" />
+      <div className="flex items-center justify-between">
+        <p className="text-heading2-bold text-pink-800">Collections</p>
+        <Button className="bg-blue-1 text-white" onClick={() => router.push("/collections/new")}>
+          <Plus className="h-4 w-4 mr-2" />
           Create Collection
         </Button>
       </div>
-      <Separator className="bg-gray-600 h-1 my-4" />
-      <div className="text-black">
-        <DataTable columns={columns} data={collections} searchKey="title" />
-      </div>
+      <Separator className="bg-grey-1 my-4 h-1" />
+      <DataTable columns={columns} data={collections} searchKey="title" />
     </div>
   );
 };

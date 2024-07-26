@@ -1,36 +1,34 @@
 "use client"
-import React, { useEffect, useState } from "react";
-import Loader from '@/components/custom ui/Loader'
-import CollectionForm from "@/components/collections/CollectionForm";
-const CollectionDetails = ({
-  params,
-}: {
-  params: { collectionId: string };
-}) => {
-  const [loading, setLoading] = useState(true);
-  const [collectionDetails, setCollectionDetails] =
-    useState<CollectionType | null>(null);
+
+import { useEffect, useState } from "react"
+
+import Loader from "@/components/custom ui/Loader"
+import CollectionForm from "@/components/collections/CollectionForm"
+
+const CollectionDetails = ({ params }: { params: { collectionId: string }}) => {
+  const [loading, setLoading] = useState(true)
+  const [collectionDetails, setCollectionDetails] = useState<CollectionType | null>(null)
 
   const getCollectionDetails = async () => {
-    try {
+    try { 
       const res = await fetch(`/api/collections/${params.collectionId}`, {
-        method: "GET",
-      });
-      const data = await res.json();
-      setCollectionDetails(data);
-      setLoading(false);
-    } catch (error) {
-      console.log("[collectionId_GET]", error);
+        method: "GET"
+      })
+      const data = await res.json()
+      setCollectionDetails(data)
+      setLoading(false)
+    } catch (err) {
+      console.log("[collectionId_GET]", err)
     }
-  };
+  }
 
   useEffect(() => {
-    getCollectionDetails();
-  }, []);
+    getCollectionDetails()
+  }, [])
 
-  return loading ? <Loader />: (
-    <CollectionForm initialData={collectionDetails} />
-  );
-};
+  return loading ? <Loader /> : (
+    <CollectionForm initialData={collectionDetails}/>
+  )
+}
 
-export default CollectionDetails;
+export default CollectionDetails

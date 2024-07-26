@@ -1,5 +1,7 @@
 "use client";
-import React, { useState } from "react";
+
+import { useState } from "react";
+
 import { Input } from "../ui/input";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
@@ -11,6 +13,7 @@ interface MultiTextProps {
   onChange: (value: string) => void;
   onRemove: (value: string) => void;
 }
+
 const MultiText: React.FC<MultiTextProps> = ({
   placeholder,
   value,
@@ -23,6 +26,7 @@ const MultiText: React.FC<MultiTextProps> = ({
     onChange(item);
     setInputValue("");
   };
+
   return (
     <>
       <Input
@@ -36,13 +40,15 @@ const MultiText: React.FC<MultiTextProps> = ({
           }
         }}
       />
-      <div className="flex gap-2 flex-wrap mt-4">
+
+      <div className="flex gap-1 flex-wrap mt-4">
         {value.map((item, index) => (
-          <Badge key={index} className="bg-gray-600 text-white">
+          <Badge key={index} className="bg-grey-1 text-white">
             {item}
             <button
               className="ml-1 rounded-full outline-none hover:bg-red-1"
               onClick={() => onRemove(item)}
+              type="button"
             >
               <X className="h-3 w-3" />
             </button>

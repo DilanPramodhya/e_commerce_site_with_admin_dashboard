@@ -1,10 +1,15 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import HeartFavorite from "./HeartFavorite";
 
-const ProductCard = ({ product }: { product: ProductType }) => {
+interface ProductCardProps {
+  product: ProductType;
+  updateSignedInUser?: (updatedUser: UserType) => void;
+}
 
+const ProductCard = ({ product, updateSignedInUser }: ProductCardProps ) => {
   return (
     <Link
       href={`/products/${product._id}`}
@@ -19,11 +24,11 @@ const ProductCard = ({ product }: { product: ProductType }) => {
       />
       <div>
         <p className="text-base-bold">{product.title}</p>
-        <p className="text-small-medium text-gray-500">{product.category}</p>
+        <p className="text-small-medium text-grey-2">{product.category}</p>
       </div>
-      <div className="flex items-center justify-between">
-        <p className="text-body-bold">LKR {product.price}</p>
-          <HeartFavorite product={product} />
+      <div className="flex justify-between items-center">
+        <p className="text-body-bold">LKR{product.price}</p>
+        <HeartFavorite product={product} updateSignedInUser={updateSignedInUser} />
       </div>
     </Link>
   );

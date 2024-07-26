@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+
+import { useState } from "react";
 import HeartFavorite from "./HeartFavorite";
 import { MinusCircle, PlusCircle } from "lucide-react";
+
 import useCart from "@/lib/hooks/useCart";
 
 const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
@@ -25,26 +25,26 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
       </div>
 
       <div className="flex gap-2">
-        <p className="text-base-medium text-gray-600">Category :</p>
+        <p className="text-base-medium text-grey-2">Category:</p>
         <p className="text-base-bold">{productInfo.category}</p>
       </div>
 
       <p className="text-heading3-bold">LKR {productInfo.price}</p>
 
       <div className="flex flex-col gap-2">
-        <p className="text-base-medium text-gray-600">Description :</p>
+        <p className="text-base-medium text-grey-2">Description:</p>
         <p className="text-small-medium">{productInfo.description}</p>
       </div>
 
       {productInfo.colors.length > 0 && (
         <div className="flex flex-col gap-2">
-          <p className="text-base-medium text-gray-600">Colors :</p>
+          <p className="text-base-medium text-grey-2">Colors:</p>
           <div className="flex gap-2">
             {productInfo.colors.map((color, index) => (
               <p
                 key={index}
                 className={`border border-black px-2 py-1 rounded-lg cursor-pointer ${
-                  selectedColor === color && "bg-black text-gray-500"
+                  selectedColor === color && "bg-black text-white"
                 }`}
                 onClick={() => setSelectedColor(color)}
               >
@@ -57,13 +57,13 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
 
       {productInfo.sizes.length > 0 && (
         <div className="flex flex-col gap-2">
-          <p className="text-base-medium text-gray-600">Sizes :</p>
+          <p className="text-base-medium text-grey-2">Sizes:</p>
           <div className="flex gap-2">
             {productInfo.sizes.map((size, index) => (
               <p
                 key={index}
                 className={`border border-black px-2 py-1 rounded-lg cursor-pointer ${
-                  selectedSize === size && "bg-black text-gray-500"
+                  selectedSize === size && "bg-black text-white"
                 }`}
                 onClick={() => setSelectedSize(size)}
               >
@@ -75,7 +75,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
       )}
 
       <div className="flex flex-col gap-2">
-        <p className="text-base-medium text-gray-600">Quantity :</p>
+        <p className="text-base-medium text-grey-2">Quantity:</p>
         <div className="flex gap-4 items-center">
           <MinusCircle
             className="hover:text-red-1 cursor-pointer"
@@ -90,7 +90,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
       </div>
 
       <button
-        className="outline outline-black text-base-bold py-2 rounded-lg hover:bg-blue-900 hover:text-white"
+        className="outline text-base-bold py-3 rounded-lg hover:bg-black hover:text-white"
         onClick={() => {
           cart.addItem({
             item: productInfo,
@@ -100,7 +100,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
           });
         }}
       >
-        Add to Cart
+        Add To Cart
       </button>
     </div>
   );

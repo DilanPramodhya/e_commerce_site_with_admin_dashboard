@@ -1,8 +1,9 @@
-import { connectToDB } from "@/lib/MongoDB";
-import { auth } from "@clerk/nextjs/server";
-import { NextRequest, NextResponse } from "next/server";
-import Product from "@/lib/models/Product";
 import Collection from "@/lib/models/Collection";
+import Product from "@/lib/models/Product";
+import { connectToDB } from "@/lib/mongoDB";
+import { auth } from "@clerk/nextjs";
+
+import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
   req: NextRequest,
@@ -22,10 +23,16 @@ export const GET = async (
         { status: 404 }
       );
     }
-
-    return NextResponse.json(product, { status: 200 });
-  } catch (error) {
-    console.log("[productId_GET], error");
+    return new NextResponse(JSON.stringify(product), {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": `${process.env.ECOMMERCE_STORE_URL}`,
+        "Access-Control-Allow-Methods": "GET",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
+  } catch (err) {
+    console.log("[productId_GET]", err);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
@@ -40,6 +47,7 @@ export const POST = async (
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+
     await connectToDB();
 
     const product = await Product.findById(params.productId);
@@ -73,14 +81,14 @@ export const POST = async (
     const addedCollections = collections.filter(
       (collectionId: string) => !product.collections.includes(collectionId)
     );
-    // Included in new data,  but not included in the previous data
+    // included in new data, but not included in the previous data
 
-    const removeCollections = product.collections.filter(
+    const removedCollections = product.collections.filter(
       (collectionId: string) => !collections.includes(collectionId)
     );
-    // Included in previous data,  but not included in the new data
+    // included in previous data, but not included in the new data
 
-    // Update Collection
+    // Update collections
     await Promise.all([
       // Update added collections with this product
       ...addedCollections.map((collectionId: string) =>
@@ -89,8 +97,8 @@ export const POST = async (
         })
       ),
 
-      // Update removed collections with this product
-      ...removeCollections.map((collectionId: string) =>
+      // Update removed collections without this product
+      ...removedCollections.map((collectionId: string) =>
         Collection.findByIdAndUpdate(collectionId, {
           $pull: { products: product._id },
         })
@@ -98,7 +106,7 @@ export const POST = async (
     ]);
 
     // Update product
-    const updateProduct = await Product.findByIdAndUpdate(
+    const updatedProduct = await Product.findByIdAndUpdate(
       product._id,
       {
         title,
@@ -115,11 +123,11 @@ export const POST = async (
       { new: true }
     ).populate({ path: "collections", model: Collection });
 
-    await updateProduct.save();
+    await updatedProduct.save();
 
-    return NextResponse.json(updateProduct, { status: 200 });
-  } catch (error) {
-    console.log("[productId_POST], error");
+    return NextResponse.json(updatedProduct, { status: 200 });
+  } catch (err) {
+    console.log("[productId_POST]", err);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
@@ -145,6 +153,7 @@ export const DELETE = async (
         { status: 404 }
       );
     }
+
     await Product.findByIdAndDelete(product._id);
 
     // Update collections
@@ -159,8 +168,11 @@ export const DELETE = async (
     return new NextResponse(JSON.stringify({ message: "Product deleted" }), {
       status: 200,
     });
-  } catch (error) {
-    console.log("[productId_DELETE], error");
+  } catch (err) {
+    console.log("[productId_DELETE]", err);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
+
+export const dynamic = "force-dynamic";
+

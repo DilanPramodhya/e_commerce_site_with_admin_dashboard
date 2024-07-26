@@ -1,6 +1,7 @@
-import { connectToDB } from "@/lib/MongoDB";
-import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs";
+
+import { connectToDB } from "@/lib/mongoDB";
 import Collection from "@/lib/models/Collection";
 import Product from "@/lib/models/Product";
 
@@ -11,7 +12,7 @@ export const GET = async (
   try {
     await connectToDB();
 
-    const collection = await Collection.findById(params.collectionId);
+    const collection = await Collection.findById(params.collectionId).populate({ path: "products", model: Product });
 
     if (!collection) {
       return new NextResponse(
@@ -21,8 +22,8 @@ export const GET = async (
     }
 
     return NextResponse.json(collection, { status: 200 });
-  } catch (error) {
-    console.log("[collectionId_GET], error");
+  } catch (err) {
+    console.log("[collectionId_GET]", err);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
@@ -37,6 +38,7 @@ export const POST = async (
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+
     await connectToDB();
 
     let collection = await Collection.findById(params.collectionId);
@@ -60,8 +62,8 @@ export const POST = async (
     await collection.save();
 
     return NextResponse.json(collection, { status: 200 });
-  } catch (error) {
-    console.log("[collectionId_POST], error");
+  } catch (err) {
+    console.log("[collectionId_POST]", err);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
@@ -85,9 +87,12 @@ export const DELETE = async (
       { collections: params.collectionId },
       { $pull: { collections: params.collectionId } }
     );
+    
     return new NextResponse("Collection is deleted", { status: 200 });
-  } catch (error) {
-    console.log("[collectionId_DELETE], error");
+  } catch (err) {
+    console.log("[collectionId_DELETE]", err);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
+
+export const dynamic = "force-dynamic";

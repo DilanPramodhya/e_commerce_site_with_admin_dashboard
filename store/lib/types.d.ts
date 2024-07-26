@@ -32,10 +32,10 @@ type OrderType = {
   shippingAddress: Object;
   _id: string;
   customerClerkId: string;
-  products: [OrderItemType];
+  products: [OrderItemType]
   shippingRate: string;
-  totalAmount: number;
-};
+  totalAmount: number
+}
 
 type OrderItemType = {
   product: ProductType;
@@ -43,4 +43,4 @@ type OrderItemType = {
   size: string;
   quantity: number;
   _id: string;
-};
+}
